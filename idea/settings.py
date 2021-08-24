@@ -173,6 +173,8 @@ TINYMCE_DEFAULT_CONFIG = {
     'statusbar': True,
 }
 
+django_heroku.settings(locals())
+
 # MAILCHIMP_API_KEY = ''
 # MAILCHIMP_DATA_CENTER = ''
 # MAILCHIMP_EMAIL_LIST_ID = ''
