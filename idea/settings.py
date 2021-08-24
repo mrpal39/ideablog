@@ -1,4 +1,5 @@
 
+import django_heroku
 
 
 from decouple import config
@@ -12,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = ['deabloglife.herokuapp.com']
+ALLOWED_HOSTS = ['womenblogwebapp.herokuapp.com']
 
 # ALLOWED_HOSTS = []
 
@@ -36,6 +37,8 @@ INSTALLED_APPS =[
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -62,7 +65,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'idea.wsgi.application'
+import sys
 
+TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
+STATICFILES_STORAGE = (
+    'django.contrib.staticfiles.storage.StaticFilesStorage'
+    if TESTING
+    else 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+)
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -119,6 +129,7 @@ MEDIA_ROOT = BASE_DIR/ 'media'
 MEDIA_URL = 'media/'
  
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
